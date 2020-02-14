@@ -1,3 +1,12 @@
 ﻿body
-{
+{background-color: red;
+}
+
+/*Login Page CSS*/
+#loginFormDiv{
+    text-align: center;
+}
+#loginForm {
+    display: inline-block;
+    margin-left: 200px;
 }
