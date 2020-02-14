@@ -1,5 +1,5 @@
 ﻿body
-{background-color: red;
+{
 }
 
 /*Login Page CSS*/
@@ -8,5 +8,5 @@
 }
 #loginForm {
     display: inline-block;
-    margin-left: 200px;
+    margin: auto;
 }
