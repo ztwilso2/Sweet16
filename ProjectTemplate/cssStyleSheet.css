@@ -6,7 +6,12 @@
 #loginFormDiv{
     text-align: center;
 }
+
 #loginForm {
     display: inline-block;
     margin: auto;
+}
+
+#loginTable{
+    text-align: center;
 }
