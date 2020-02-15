@@ -55,7 +55,7 @@ namespace ProjectTemplate
 				MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
 				DataTable table = new DataTable();
 				adapter.Fill(table);
-				return "Success!";
+				return "Success";
 			}
 			catch (Exception e)
 			{
