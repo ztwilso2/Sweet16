@@ -68,7 +68,7 @@ namespace ProjectTemplate
 
 
 
-
+//Create New Account Logic//
         [WebMethod(EnableSession = true)]
         public void RequestAccount(string idRegister, string fName, string lName, string userName, string password)
         {
@@ -107,5 +107,38 @@ namespace ProjectTemplate
             }
             sqlConnection.Close();
         }
+
+
+        //Login Logic//
+        [WebMethod(EnableSession = true)]
+        public bool LogOn(string uid, string pass)
+        {
+            bool success = false;
+
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+            string sqlSelect = "SELECT idRegister FROM Register WHERE email=@idValue and password=@passValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@idValue", HttpUtility.UrlDecode(uid));
+            sqlCommand.Parameters.AddWithValue("@passValue", HttpUtility.UrlDecode(pass));
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+
+            DataTable sqlDt = new DataTable();
+            sqlDa.Fill(sqlDt);
+
+            if (sqlDt.Rows.Count > 0)
+            {
+                success = true;
+            }
+
+            return success;
+        }
     }
 }
+
+
+
+
