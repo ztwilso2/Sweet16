@@ -2,88 +2,95 @@
 <html>
 <head>
     <title>StudyBuddies</title>
-    <link rel="stylesheet" type="text/css" href="cssStyleSheet.css">
+    <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
 </head>
 <body>
-    <h1 style="color:rgb(128,0,0)">Create an Account</h1>
-    <form>
-        <table>
-            <tr>
-                <td>First Name</td>
-                <td><input type="text" name=""></td>
-            </tr>
-            <tr>
-                <td>Last Name</td>
-                <td><input type="text" name=""></td>
-            </tr>
-            <tr>
-                <td>User Name (asurite)</td>
-                <td><input type="text" name=""></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name=""></td>
-            </tr>
-            <tr>
-                <td>Email (asu.edu)</td>
-                <td><input type="text" name=""></td>
-            </tr>
-            <tr>
-                <td>School year</td>
-                <td>
-                    <select>
-                        <option value=" " selected=""> </option>
-                        <option value="Freshman">Freshman</option>
-                        <option value="Sophmore">Sophmore</option>
-                        <option value="Junior">Junior</option>
-                        <option value="Senior">Senior</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>College</td>
-                <td>
-                    <select>
-                        <option value=" "> </option>
-                        <option value="">Business, W.P. Carey School of</option>
-                        <option value=" ">Design and the Arts, Herberger Institute for</option>
-                        <option value=" ">Teachers College, Mary Lou Fulton</option>
-                        <option value=" ">Engineering, Ira A. Fluton Schools of</option>
-                        <option value=" ">Future of Innovation in Society, School for the</option>
-                        <option value=" ">Health Solutions, College of</option>
-                        <option value=" ">Integrative Sciences and Arts, College of</option>
-                        <option value=" ">Interdisciplinary Arts and Sciences, New College of</option>
-                        <option value=" ">Journalism and Mass Comm.,Walter Cronkite School of</option>
-                        <option value=" ">Law, Sandra Day O'Connor College of</option>
-                        <option value=" ">Liberal Arts and Sciences, The College of</option>
-                        <option value=" ">Nursing and Health Innovation, Edson College of</option>
-                        <option value=" ">Public Services and Community Solutions, Watts College of</option>
-                        <option value=" ">Sustainability, School of</option>
-                        <option value=" ">Thunderbird School of Global Management</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Campus</td>
-                <td>
-                    <select>
-                        <option value=" "> </option>
-                        <option value=" ">Tempe</option>
-                        <option value=" ">Polytechnic</option>
-                        <option value=" ">West</option>
-                        <option value=" ">Downtown Phoenix</option>
-                        <option value=" ">Lake Havasu</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="Register" style="background-color:rgb(255,215,0);">
-                </td>
-            </tr>
+    <div class="header">
+        <h1>StudyBuddies</h1>
+        <p>No More Studying Alone</p>
+    </div>
+    <div id="registerFormDiv">
 
-        </table>
-    </form>
-    <p></p>
+        <form id="RegisterForm">
+            <h1 id="titleText" style="color:rgb(128,0,0)">Create an Account</h1>
+            <div id="RegisterInfoDiv">
+                <table id="registerTable" >
+                    <tr>
+                        <td>First Name</td>
+                        <td><input type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td><input type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td>User Name (asurite)</td>
+                        <td><input type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" name=""></td>
+                    </tr>
+                    <tr>
+                        <td>Email (asu.edu)</td>
+                        <td><input type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td>School year</td>
+                        <td>
+                            <select>
+                                <option value=" " selected=""> </option>
+                                <option value="Freshman">Freshman</option>
+                                <option value="Sophmore">Sophmore</option>
+                                <option value="Junior">Junior</option>
+                                <option value="Senior">Senior</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>College</td>
+                        <td>
+                            <select>
+                                <option value=" "> </option>
+                                <option value="">Business, W.P. Carey School of</option>
+                                <option value=" ">Design and the Arts, Herberger Institute for</option>
+                                <option value=" ">Teachers College, Mary Lou Fulton</option>
+                                <option value=" ">Engineering, Ira A. Fluton Schools of</option>
+                                <option value=" ">Future of Innovation in Society, School for the</option>
+                                <option value=" ">Health Solutions, College of</option>
+                                <option value=" ">Integrative Sciences and Arts, College of</option>
+                                <option value=" ">Interdisciplinary Arts and Sciences, New College of</option>
+                                <option value=" ">Journalism and Mass Comm.,Walter Cronkite School of</option>
+                                <option value=" ">Law, Sandra Day O'Connor College of</option>
+                                <option value=" ">Liberal Arts and Sciences, The College of</option>
+                                <option value=" ">Nursing and Health Innovation, Edson College of</option>
+                                <option value=" ">Public Services and Community Solutions, Watts College of</option>
+                                <option value=" ">Sustainability, School of</option>
+                                <option value=" ">Thunderbird School of Global Management</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Campus</td>
+                        <td>
+                            <select>
+                                <option value=" "> </option>
+                                <option value=" ">Tempe</option>
+                                <option value=" ">Polytechnic</option>
+                                <option value=" ">West</option>
+                                <option value=" ">Downtown Phoenix</option>
+                                <option value=" ">Lake Havasu</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="./loginPage.html">Log in Page</a></td>
+                        <td><button type="button">Register</button></td>
+                    </tr>
+
+                </table>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

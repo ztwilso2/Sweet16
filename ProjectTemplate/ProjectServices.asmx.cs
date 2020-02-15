@@ -70,22 +70,27 @@ namespace ProjectTemplate
 
 //Create New Account Logic//
         [WebMethod(EnableSession = true)]
-        public void RequestAccount(string idRegister, string fName, string lName, string userName, string password)
+        public void RequestAccount(string fName, string lName, string userName, string password, string email,
+                                    string year, string college, string campus)
         {
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
             //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
             //does is tell mySql server to return the primary key of the last inserted row.
-            string sqlSelect = "insert into Register (idRegister, fname, lname, userName, password) " +
-                "values(@idRegisterValue, @fnameValue, @lnameValue, @usernameValue, @passwordValue); SELECT LAST_INSERT_ID();";
+            string sqlSelect = "insert into Register (fname, lname, userName, password, email, year, college, campus) " +
+                "values(@fnameValue, @lnameValue, @usernameValue, @passwordValue, @emailValue, @yearValue, @collegeValue, @campusValue); SELECT LAST_INSERT_ID();";
 
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
 
-            sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(idRegister));
+            //sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(idRegister));
             sqlCommand.Parameters.AddWithValue("@fnameValue", HttpUtility.UrlDecode(fName));
             sqlCommand.Parameters.AddWithValue("@lnameValue", HttpUtility.UrlDecode(lName));
             sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(userName));
             sqlCommand.Parameters.AddWithValue("@passwordValue", HttpUtility.UrlDecode(password));
+            sqlCommand.Parameters.AddWithValue("@emailValue", HttpUtility.UrlDecode(email));
+            sqlCommand.Parameters.AddWithValue("@yearValue", HttpUtility.UrlDecode(year));
+            sqlCommand.Parameters.AddWithValue("@collegeValue", HttpUtility.UrlDecode(college));
+            sqlCommand.Parameters.AddWithValue("@campusValue", HttpUtility.UrlDecode(campus));
 
             //this time, we're not using a data adapter to fill a data table.  We're just
             //opening the connection, telling our command to "executescalar" which says basically
@@ -103,7 +108,7 @@ namespace ProjectTemplate
                 //the database!
             }
             catch (Exception e)
-            {
+            { 
             }
             sqlConnection.Close();
         }

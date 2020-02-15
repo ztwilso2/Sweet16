@@ -1,5 +1,6 @@
 ﻿body {
 }
+/*both pages*/
 
 /*Login Page CSS*/
 #loginFormDiv {
@@ -14,3 +15,27 @@
 #loginTable {
     text-align: center;
 }
+
+/*Register Page CSS*/
+#RegisterFormDiv{
+    text-align: center;
+}
+#RegisterForm {
+    display: inline-block;
+    margin: auto;
+}
+#registerTable {
+    text-align: left;
+   }
+
+.header {
+    padding: 30px; /* some padding */
+    text-align: center; /* center the text */
+    background: #FFD700; /* gold background */
+    color: black; /* white text color */
+}
+
+    /* Increase the font size of the <h1> element */
+ .header h1 {
+        font-size: 40px;
+    }
