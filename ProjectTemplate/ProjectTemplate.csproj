@@ -91,8 +91,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="registerPage.html" />
+    <Content Include="loginPage.html" />
     <Content Include="index.html" />
     <Content Include="ProjectServices.asmx" />
+    <Content Include="StyleSheet1.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

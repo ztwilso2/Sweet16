@@ -1,9 +1,8 @@
-﻿body
-{
+﻿body {
 }
 
 /*Login Page CSS*/
-#loginFormDiv{
+#loginFormDiv {
     text-align: center;
 }
 
@@ -12,6 +11,6 @@
     margin: auto;
 }
 
-#loginTable{
+#loginTable {
     text-align: center;
 }
