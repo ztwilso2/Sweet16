@@ -57,8 +57,6 @@ namespace ProjectTemplate
 				adapter.Fill(table);
 
 				return "Success";
-
-				return testQuery;
 			}
 			catch (Exception e)
 			{
