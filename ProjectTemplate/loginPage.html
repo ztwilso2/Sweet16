@@ -4,13 +4,16 @@
         Study Buddies
     </title>
     <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        
+
         function logOn() {
             var webMethod = "ProjectServices.asmx/LogOn";
             var parameters = "{}";
-            var uid = $("username").val();
-            var pass = $("password").val();
-            parameters.push(uid, pass)
+            var uid = $("#username").val();
+            var pass = $("#password").val();
+            //parameters.push(uid, pass)
 
             //jQuery ajax method
             $.ajax({
@@ -52,7 +55,7 @@
                     </tr>
                     <tr>
                         <td><a href="./registerpage.html">Create an Account</a></td>
-                        <td><button type="button" onclick="logOn">Log In</button></td>
+                        <td><button type="button" id="logOnButton" onclick="logOn()">Log In</button></td>
                     </tr>
                 </table>
             </div>

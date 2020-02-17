@@ -17,16 +17,20 @@
 }
 
 /*Register Page CSS*/
-#RegisterFormDiv{
+#registerFormDiv{
     text-align: center;
 }
-#RegisterForm {
+#registerForm {
     display: inline-block;
     margin: auto;
 }
 #registerTable {
     text-align: left;
    }
+
+#schoolSelection {
+    width: 159px;
+}
 
 .header {
     padding: 30px; /* some padding */
