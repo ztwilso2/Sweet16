@@ -10,10 +10,11 @@
 
         function logOn() {
             var webMethod = "ProjectServices.asmx/LogOn";
-            var parameters = "{}";
-            var uid = $("#username").val();
-            var pass = $("#password").val();
-            //parameters.push(uid, pass)
+            var uid = $("#userId").val();
+            var pass = $("#pass").val();
+            var parameters = "{\"uid\":\"" + encodeURI(uid) + "\",\"pass\":\"" + encodeURI(pass) + "\"}";
+            
+           
 
             //jQuery ajax method
             $.ajax({
@@ -23,8 +24,14 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    var responseFromServer = msg.d;
-                    alert(responseFromServer);
+                    if (msg.d) {
+                        alert("Logged in. Taking you to home page.");
+                    }
+                    else {
+                        $("#errorMessage").html("Failed to log in. Please check your password and username.");
+                    }
+                  
+                    
                 },
                 error: function (e) {
                     alert("this code will only execute if javascript is unable to access the webservice");
@@ -46,12 +53,12 @@
                 <table id="loginTable">
                     <tr>
                         <td>Username:</td>
-                        <td><input type="text" id="username" name="username" /></td>
+                        <td><input type="text" id="userId" name="username" /></td>
                     </tr>
 
                     <tr>
                         <td>Password:</td>
-                        <td><input type="text" id="password" name="password" /></td>
+                        <td><input type="text" id="pass" name="password" /></td>
                     </tr>
                     <tr>
                         <td><a href="./registerpage.html">Create an Account</a></td>
@@ -60,6 +67,9 @@
                 </table>
             </div>
         </form>
+    </div>
+    <div id="errorMessageDiv">
+        <p id="errorMessage"></p>
     </div>
 </body>
 </html>

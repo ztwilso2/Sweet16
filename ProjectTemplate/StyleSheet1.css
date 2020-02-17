@@ -3,7 +3,7 @@
 /*both pages*/
 
 /*Login Page CSS*/
-#loginFormDiv {
+#loginFormDiv, #errorMessageDiv{
     text-align: center;
 }
 
@@ -16,8 +16,13 @@
     text-align: center;
 }
 
+#errorMessage {
+    display: inline-block;
+    margin: auto;
+    color: red;
+}
 /*Register Page CSS*/
-#registerFormDiv{
+#registerFormDiv {
     text-align: center;
 }
 #registerForm {
@@ -29,6 +34,14 @@
    }
 
 #schoolSelection {
+    width: 159px;
+}
+
+#schoolYear {
+    width: 159px;
+}
+
+#campusSelection {
     width: 159px;
 }
 
