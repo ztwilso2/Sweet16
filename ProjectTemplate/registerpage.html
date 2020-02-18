@@ -10,7 +10,7 @@
         }
 
         function createAccount() {
-            var webMethod = "AccountServices.asmx/RequestAccount";
+            var webMethod = "ProjectServices.asmx/RequestAccount";
             var fName = $('#newFName').val();
             var lName = $('#newLName').val();
             var userName = $('#newUserName').val();
@@ -20,10 +20,7 @@
             var college = $('#newSchoolSelection').val();
             var campus = $('#newCampusSelection').val();
 
-            var parameters = "{\"fName\":\"" + encodeURI(fName) + "\",\"lName\":\"" + encodeURI(lName) +
-                "\",\"userName\":\"" + encodeURI(userName) + "\",\"password\":\"" + encodeURI(password) +
-                "\",\"email\":\"" + encodeURI(email) + "\",\"year\":\"" + encodeURI(year) +
-                "\",\"college\":\"" + encodeURI(college) + "\",\"campus\":\"" + encodeURI(campus) + "\"}";
+            var parameters = "{\"fName\":\"" + encodeURI(fName) + "\",\"lName\":\"" + encodeURI(lName) + "\",\"userName\":\"" + encodeURI(userName) + "\",\"password\":\"" + encodeURI(password) + "\",\"email\":\"" + encodeURI(email) + "\",\"year\":\"" + encodeURI(year) + "\",\"college\":\"" + encodeURI(college) + "\",\"campus\":\"" + encodeURI(campus) + "\"}";
 
             $.ajax({
                 type: "POST",
