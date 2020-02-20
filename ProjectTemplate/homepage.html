@@ -6,6 +6,38 @@
     <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
+
+        function goToLogOn() {
+            window.location.assign("./loginPage.html")
+        }
+
+        //LogOffFunction
+        function LogOff() {
+
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        //we logged off, so go back to logon page,
+                        //stop checking messages
+                        //and clear the chat panel
+                        goToLogOn();
+                        
+                    }
+                    else {
+                    }
+                },
+                error: function (e) {
+                    alert("Error with the server. Please try again.");
+                }
+            });
+        }
+
+
         function div_show() {
             document.getElementById('createEvent').style.display = "block";
         } </script>
@@ -17,7 +49,7 @@
             <p>No More Studying Alone</p>
             <nav>
                 <ul>
-                    <li><a href="">Logout</a></li>
+                    <li onclick="LogOff()"><a href="">Logout</a></li>
                     <li><a href="homepage.html">Home</a></li>
                     <li><a href="">Profile</a></li>
                     <li><a href=""></a>Create Event</a></li>

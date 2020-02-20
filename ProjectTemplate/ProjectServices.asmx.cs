@@ -134,6 +134,7 @@ namespace ProjectTemplate
 
             if (sqlDt.Rows.Count > 0)
             {
+                Session["id"] = sqlDt.Rows[0]["idRegister"];
                 success = true;
             }
 

@@ -25,7 +25,7 @@
                 dataType: "json",
                 success: function (msg) {
                     if (msg.d) {
-                        alert("Logged in. Taking you to home page.");
+                        window.location.assign("./homepage.html")
                     }
                     else {
                         $("#errorMessage").html("Failed to log in. Please check your password and username.");
@@ -39,6 +39,16 @@
             });
         }
 
+        window.onload = function () {
+            document.getElementById("pass").addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault()
+                    document.getElementById("logOnButton").click();
+                }
+            });
+
+        } 
+        
     </script>
 </head>
 <body>
