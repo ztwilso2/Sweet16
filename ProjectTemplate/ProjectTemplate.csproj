@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="createEvent.html" />
     <Content Include="Global.asax" />
     <Content Include="homepage.html" />
     <Content Include="registerPage.html" />

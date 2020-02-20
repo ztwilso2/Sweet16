@@ -2,79 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>StudyBuddies</title>
-    <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title></title>
     <script type="text/javascript">
+    function div_show() {
+        var popup = document.getElementById('pop');
+        popup.classList.toggle("show")
+    }</script>
 
-        function goToLogOn() {
-            window.location.assign("./loginPage.html")
-        }
-
-        //LogOffFunction
-        function LogOff() {
-
-            var webMethod = "ProjectServices.asmx/LogOff";
-            $.ajax({
-                type: "POST",
-                url: webMethod,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg.d) {
-                        //we logged off, so go back to logon page,
-                        //stop checking messages
-                        //and clear the chat panel
-                        goToLogOn();
-                        
-                    }
-                    else {
-                    }
-                },
-                error: function (e) {
-                    alert("Error with the server. Please try again.");
-                }
-            });
-        }
-
-
-        /*function div_show() {
-            document.getElementById('createEvent').style.display = "block";
-        } */
-        
-    </script>
 </head>
 <body>
-    <header>
-        <div class="header">
-            <h1>StudyBuddies</h1>
-            <p>No More Studying Alone</p>
-            <nav>
-                <ul>
-                    <li onclick="LogOff()"><a href="">Logout</a></li>
-                    <li><a href="homepage.html">Home</a></li>
-                    <li><a href="">Profile</a></li>
-                    <li></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <section id="layout">
-        <aside id="eventBar">
-            <form action="/" method="post">
-                <h3>Upcoming Events!</h3>
-                <table>
-                    <tr>
-                        <td>WPC480 Review</td>
-                    </tr>
-                </table>
-            </form>
-        </aside>
-        <article id="messages">
-            This is the message board
-            <p>Hi!!!!</p>
-        </article>
-    </section>
     <div id="pop">
         <form id="eventCreation">
             <h2>Create an Event</h2>
