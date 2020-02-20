@@ -73,7 +73,7 @@ header nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 28%;
+    width: 30%;
     float: right;
     overflow: hidden;
     background-color: #333;
@@ -92,3 +92,27 @@ header li a {
 header li a:hover {
         background-color: #111;
     }
+#layout{
+    display:block;
+}
+#eventBar {
+    width: 25%;
+    background: blue;
+    float: left;
+    padding:20px;
+    
+}
+
+#messages {
+    float: left;
+    background: pink;
+    padding: 20px;
+    width: 67%;
+    
+    
+}
+section:after {
+    content: "";
+    display: table;
+    clear: both;
+}
