@@ -95,24 +95,29 @@ header li a:hover {
 #layout{
     display:block;
 }
-#eventBar {
+#create{
     width: 25%;
-    background: blue;
-    float: left;
-    padding:20px;
+    background: cornsilk;
+    float: right;
+    padding: 20px;
     
 }
-
+h2{color:aqua;}
+#eventBar {
+    width: 25%;
+    background: orange;
+    float: left;
+    padding:20px;   
+}
 #messages {
     float: left;
     background: pink;
     padding: 20px;
     width: 67%;
-    
-    
 }
 section:after {
     content: "";
     display: table;
     clear: both;
 }
+
