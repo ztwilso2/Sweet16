@@ -170,12 +170,6 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
             sqlCommand.Parameters.AddWithValue("@timeValue", HttpUtility.UrlDecode(time));
             sqlCommand.Parameters.AddWithValue("@locationValue", HttpUtility.UrlDecode(location));
-   
-
-            //this time, we're not using a data adapter to fill a data table.  We're just
-            //opening the connection, telling our command to "executescalar" which says basically
-            //execute the query and just hand me back the number the query returns (the ID, remember?).
-            //don't forget to close the connection!
             sqlConnection.Open();
             //we're using a try/catch so that if the query errors out we can handle it gracefully
             //by closing the connection and moving on
