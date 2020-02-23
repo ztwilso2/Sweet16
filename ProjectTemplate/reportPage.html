@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>
+		StudyBddies
+	</title>
+	<link rel="stylesheet" type="text/css" href="StyleSheet1.css">
+</head>
+<body>
+	<script type="text/javascript">
+	        function createReport() {
+            var webMethod = "ProjectServices.asmx/ReportAccount";
+            var RId = $('#newRId').val();
+            var ReporterId = $('#newReporterId').val();
+            var ReporteeId = $('#newReporteeId').val();
+            var ReportReason = $('#newReportReason').val();
+            var Comment = $('#newComment').val();
+
+
+            var parameters = "{\"RId\":\"" + encodeURI(RId) + "\",\"ReporterId\":\"" + encodeURI(ReporterId) + "\",\"ReporteeId\":\"" + encodeURI(ReporteeId) + "\",\"ReportReason\":\"" + encodeURI(ReportReason) + "\",\"Comment\":\"" + encodeURI(Comment) + "\"}";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert("Account added. Please login.");
+                    goToLogOn();
+                },
+                error: function (e) {
+                    alert("An error was encountered. Please try again.");
+                }
+            });
+        }
+	</script>
+	<div class="header">
+		<h1>StudyBuddies</h1>
+		<p>No More Studying Alone</p>
+	</div>
+
+	<div id="ReportFormDiv">
+		<form id="ReportForm">
+			<h1 id="titleText" style="color:rgb(128,0,0)">StudyBuddies</h1>
+			<p><h3>Please select an entry that most exemplifies your issue</h3></p>
+			<input type="checkbox" id="p1">
+			<label for="p1"> Innapropriate Language </label> <br>
+			<input type="checkbox" id="p2">
+			<label for="p2"> Poor hygene </label> <br>
+			<input type="checkbox" id="p3">
+			<label for="p3"> I don't like them </label> <br>
+			<input type="checkbox" id="p4">
+			<label for="p4"> This person was using the site for the wrong reasons </label> <br>
+			<input type="checkbox" id="p5">
+			<label for="p5"> Academic integrity issues </label> <br>
+			<textarea id="comment" rows="4" cols="50" form="ReportForm">If you have not found your answer above, or wish to leave an additional comment, please do so here.</textarea>
+			<input type="submit" value="Submit">
+
+		</form>
+
+
+	</div>
+
+</body>
+</html>

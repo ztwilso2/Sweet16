@@ -37,11 +37,31 @@
                 }
             });
         }
+        function createEvent() {
+            var webMethod = "ProjectServices.asmx/NewEvent";
+            var className = $('#newClassName').val();
+            var desc = $('#newDesc').val();
+            var date = $('#newDate').val();
+            var time = $('#newTime').val();
+            var location = $('#newLocation').val();
+            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location)+"\"}";
 
-
-        function div_show() {
-            document.getElementById('createEvent').style.display = "block";
-        } </script>
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert("Event added.");
+                    goToLogOn();
+                },
+                error: function (e) {
+                    alert("An error was encountered. Please try again.");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -53,42 +73,43 @@
                     <li onclick="LogOff()"><a href="">Logout</a></li>
                     <li><a href="homepage.html">Home</a></li>
                     <li><a href="">Profile</a></li>
-                    <li><a href=""></a>Create Event</a></li>
+                    <li></li>
                 </ul>
             </nav>
         </div>
     </header>
-    <section id="layout">  
-            <aside id="eventBar">
-        <form action="/" method="post">
-            <h3>Upcoming Events!</h3>
-            <table>
-                <tr>
-                    <td>WPC480 Review</td>
-                </tr>
-            </table>
-                </form>
-            </aside>
-            <article id="messages">This is the message board
-                <p>Hi!!!!</p></article>
-    </section>
 
-    <form id="eventCreation">
-        <h2>Create an Event</h2>
-        <div id="createForm">
-            <table>
+    <article id="create">
+        <h2>Create an Event:</h2>
+        <form>
+            <table id="createForm">
                 <tr>
                     <td>Class Name</td>
-                    <td><input type="text" /></td>
+                    <td><input id="newClassName" type="text" /></td>
                 </tr>
-                <tr><td>Description</td>
-                <td><input type="text" /></td></tr>
-                <tr><td>Date</td>
-                <td><input type="date" id="start" name="trip-start"
-                           value="2020-02-20"
-                           min="2020-02-02" max="2022-12-31"></td></tr>
-                <tr><td>Time</td>
-                <td><select><option value="7:30">7:30 AM</option>
+                <tr>
+                    <td>Description</td>
+                    <td>
+                        <select id="newDesc">
+                            <option value="test review">Test Review</option>
+                            <option value="homework review">Homework Review</option>
+                            <option value="Study session">Study Session</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>
+                        <input type="date" id="newDate" name="trip-start"
+                               value="2020-02-20"
+                               min="2020-02-02" max="2022-12-31">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Time</td>
+                    <td>
+                        <select id="newTime">
+                            <option value="7:30">7:30 AM</option>
                             <option value="8:00">8:00 AM</option>
                             <option value="8:30">8:30 AM</option>
                             <option value="9:00">9:00 AM</option>
@@ -110,9 +131,45 @@
                             <option value="5:00">5:00 PM</option>
                             <option value="5:30">5:30 PM</option>
                             <option value="6:00">6:00 PM</option>
-                    </select></td></tr>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>
+                        <select id="newLocation">
+                            <option value="wpcSb">WPC Starbucks</option>
+                            <option value="muSb">MU Starbucks</option>
+                            <option value="hayden">Hayden Library</option>
+                            <option value="noble">Noble Library</option>
+                            <option value="pavilion">Student Pavilion</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr><td colspan="2"><button type="button" onclick="createEvent()">Create</button> </td></tr>
             </table>
-        </div>
-    </form>        
+
+        </form>
+    </article>
+    <section id="layout">
+
+
+
+        <aside id="eventBar">
+            <form action="/" method="post">
+                <h3>Upcoming Events!</h3>
+                <table>
+                    <tr>
+                        <td>WPC480 Review</td>
+                    </tr>
+                </table>
+            </form>
+        </aside>
+        <article id="messages">
+            This is the message board
+            <p>Hi!!!!</p>
+        </article>
+    </section>
+
 </body>
 </html>

@@ -151,6 +151,41 @@ namespace ProjectTemplate
             Session.Abandon();
             return true;
         }
+
+        [WebMethod(EnableSession = true)]
+        public void NewEvent(string className, string desc, string date, string time, string location)
+        {
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+            //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
+            //does is tell mySql server to return the primary key of the last inserted row.
+            string sqlSelect = "insert into events (className, desc, date, time, location) " +
+                "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue); SELECT LAST_INSERT_ID();";
+
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            //sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(idRegister));
+            sqlCommand.Parameters.AddWithValue("@classNameValue", HttpUtility.UrlDecode(className));
+            sqlCommand.Parameters.AddWithValue("@descValue", HttpUtility.UrlDecode(desc));
+            sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
+            sqlCommand.Parameters.AddWithValue("@timeValue", HttpUtility.UrlDecode(time));
+            sqlCommand.Parameters.AddWithValue("@locationValue", HttpUtility.UrlDecode(location));
+            sqlConnection.Open();
+            //we're using a try/catch so that if the query errors out we can handle it gracefully
+            //by closing the connection and moving on
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                //here, you could use this accountID for additional queries regarding
+                //the requested account.  Really this is just an example to show you
+                //a query where you get the primary key of the inserted row back from
+                //the database!
+            }
+            catch (Exception e)
+            {
+            }
+            sqlConnection.Close();
+        }
     }
 }
  
