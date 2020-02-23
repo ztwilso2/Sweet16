@@ -153,12 +153,12 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public void NewEvent(string className, string desc, string date, string time, string location)
+        public string NewEvent(string className, string desc, string date, string time, string location)
         {
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
             //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
             //does is tell mySql server to return the primary key of the last inserted row.
-            string sqlSelect = "insert into events (className, desc, date, time, location) " +
+            string sqlSelect = "insert into events (className, descr, date, time, location) " +
                 "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue); SELECT LAST_INSERT_ID();";
 
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
@@ -180,11 +180,14 @@ namespace ProjectTemplate
                 //the requested account.  Really this is just an example to show you
                 //a query where you get the primary key of the inserted row back from
                 //the database!
+                sqlConnection.Close();
+                return "success";
             }
             catch (Exception e)
             {
+                return "error" + e.Message;
             }
-            sqlConnection.Close();
+            //sqlConnection.Close();
         }
     }
 }
