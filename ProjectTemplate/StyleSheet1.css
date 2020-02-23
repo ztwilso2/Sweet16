@@ -1,5 +1,4 @@
-﻿body {
-}
+﻿
 /*both pages*/
 
 /*Login Page CSS*/
@@ -95,23 +94,28 @@ header li a:hover {
 #layout{
     display:block;
 }
-#create{
+#create {
     width: 25%;
-    background: cornsilk;
-    float: right;
+    background: #ba454b;
+    float: left;
     padding: 20px;
-    
 }
-h2{color:aqua;}
+
+h2 {
+    color: black;
+}
+
 #eventBar {
     width: 25%;
-    background: orange;
+    background: #ba454b;
     float: left;
-    padding:20px;   
+    padding: 20px;
+    clear: left;
 }
+
 #messages {
-    float: left;
-    background: pink;
+    float: right;
+    background: #a3a2a2;
     padding: 20px;
     width: 67%;
 }
