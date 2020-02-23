@@ -119,7 +119,7 @@ namespace ProjectTemplate
             bool success = false;
 
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
-            string sqlSelect = "SELECT idRegister FROM Register WHERE email=@idValue and password=@passValue";
+            string sqlSelect = "SELECT idRegister FROM Register WHERE (email=@idValue and password=@passValue) or (userName=@idValue and password=@passValue);";
 
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
