@@ -7,8 +7,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
 
+        document.addEventListener("load", loadEvents());
+
         function goToLogOn() {
             window.location.assign("./loginPage.html")
+        }
+
+        function currentDate() {
+            var today = new Date(); 
+            var day = today.getDate()
+            var month = today.getMonth() + 1
+            var year = today.getFullYear()
+
+            month = (month < 10 ? "0" : "") + month;
+            day = (day < 10 ? "0" : "") + day;
+
+            var date = year + "-" + month + "-" + day
+
+            document.getElementById('newDate').value = date;  
         }
 
         //LogOffFunction
@@ -22,9 +38,7 @@
                 dataType: "json",
                 success: function (msg) {
                     if (msg.d) {
-                        //we logged off, so go back to logon page,
-                        //stop checking messages
-                        //and clear the chat panel
+                        //we logged off, so go back to logon page
                         goToLogOn();
                         
                     }
@@ -37,6 +51,7 @@
                 }
             });
         }
+
         function newEvent() {
             var webMethod = "ProjectServices.asmx/NewEvent";
             var className = $('#newClassName').val();
@@ -45,8 +60,6 @@
             var time = $('#newTime').val();
             var location = $('#newLocation').val();
             var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location)+"\"}";
-            alert(time);
-            alert(location);
             $.ajax({
                 type: "POST",
                 url: webMethod,
@@ -61,9 +74,47 @@
                 }
             });
         }
+
+        var eventsArray;
+
+        function loadEvents() {
+            var webMethod = "ProjectServices.asmx/GetEvents";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d.length > 0) {
+
+                        $("#eventsList").empty();
+
+                        eventsArray = msg.d;
+
+                        for (var i = 0; i < eventsArray.length; i++) {
+                           
+                            var event = "<div>" +
+                                "Class:" + eventsArray[i].className + "<br>" +
+                                "Description:" + eventsArray[i].description + "<br>" +
+                                "Date:" + eventsArray[i].date + "<br>" +
+                                "Time:" + eventsArray[i].time + "<br>" +
+                                "Location:" + eventsArray[i].location + "<br>" +
+                                "</div>" +
+                                "<hr>"
+
+                            $("#eventsList").append(event);
+                        }
+
+                    }
+                },
+                error: function (e) {
+                    alert("Can't load events.");
+                }
+            });
+        }
     </script>
 </head>
-<body>
+<body onload="currentDate();">
     <header>
         <div class="header">
             <h1>StudyBuddies</h1>
@@ -78,82 +129,7 @@
             </nav>
         </div>
     </header>
-<<<<<<< HEAD
-=======
 
-    <article id="create">
-        <h2>Create an Event:</h2>
-        <form>
-            <table id="createForm">
-                <tr>
-                    <td>Class Name</td>
-                    <td><input id="newClassName" type="text" /></td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td>
-                        <select id="newDesc">
-                            <option value="test review">Test Review</option>
-                            <option value="homework review">Homework Review</option>
-                            <option value="Study session">Study Session</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date</td>
-                    <td>
-                        <input type="date" id="newDate" name="trip-start"
-                               value="2020-02-20"
-                               min="2020-02-02" max="2022-12-31">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Time</td>
-                    <td>
-                        <select id="newTime">
-                            <option value="7:30">7:30 AM</option>
-                            <option value="8:00">8:00 AM</option>
-                            <option value="8:30">8:30 AM</option>
-                            <option value="9:00">9:00 AM</option>
-                            <option value="9:30">9:30 AM</option>
-                            <option value="10:00">10:00 AM</option>
-                            <option value="10:30">10:30 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                            <option value="11:30">11:30 AM</option>
-                            <option value="12:00">12:00 PM</option>
-                            <option value="12:30">12:30 PM</option>
-                            <option value="1:00">1:00 PM</option>
-                            <option value="1:30">1:30 PM</option>
-                            <option value="2:00">2:00 PM</option>
-                            <option value="2:30">2:30 PM</option>
-                            <option value="3:00">3:00 PM</option>
-                            <option value="3:30">3:30 PM</option>
-                            <option value="4:00">4:00 PM</option>
-                            <option value="4:30">4:30 PM</option>
-                            <option value="5:00">5:00 PM</option>
-                            <option value="5:30">5:30 PM</option>
-                            <option value="6:00">6:00 PM</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Location</td>
-                    <td>
-                        <select id="newLocation">
-                            <option value="wpcSb">WPC Starbucks</option>
-                            <option value="muSb">MU Starbucks</option>
-                            <option value="hayden">Hayden Library</option>
-                            <option value="noble">Noble Library</option>
-                            <option value="pavilion">Student Pavilion</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr><td colspan="2"><button type="button" onclick="newEvent()">Create</button> </td></tr>
-            </table>
-
-        </form>
-    </article>
->>>>>>> e40501c349f0289f2ebaf8ce1b5d3eec54a3e57e
     <section id="layout">
         <article id="create">
             <h2>Create an Event:</h2>
@@ -177,7 +153,7 @@
                         <td>Date</td>
                         <td>
                             <input type="date" id="newDate" name="trip-start"
-                                   value="2020-02-20"
+                                   value=""
                                    min="2020-02-02" max="2022-12-31">
                         </td>
                     </tr>
@@ -222,7 +198,7 @@
                             </select>
                         </td>
                     </tr>
-                    <tr><td><button type="button" onclick="newEvent()">Create</button> </td></tr>
+                    <tr><td><button type="button" onclick="newEvent(); loadEvents()">Create</button> </td></tr>
                 </table>
 
             </form>
@@ -237,11 +213,7 @@
         <aside id="eventBar">
             <form action="/" method="post">
                 <h3>Upcoming Events!</h3>
-                <table>
-                    <tr>
-                        <td>Events will print here</td>
-                    </tr>
-                </table>
+                <div id="eventsList"></div>
             </form>
         </aside>
 
