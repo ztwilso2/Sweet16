@@ -93,6 +93,7 @@
     <Content Include="createEvent.html" />
     <Content Include="Global.asax" />
     <Content Include="homepage.html" />
+    <Content Include="profile.html" />
     <Content Include="registerPage.html" />
     <Content Include="loginPage.html" />
     <Content Include="index.html" />
