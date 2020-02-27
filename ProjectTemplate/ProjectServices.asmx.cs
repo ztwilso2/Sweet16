@@ -238,6 +238,53 @@ namespace ProjectTemplate
             }
         }
     }
+    //getEventInfo
+    [WebMethod(EnableSession = true)]
+    public Event[] ProfilePage()
+    {
+
+        //WE ONLY SHARE Events WITH LOGGED IN USERS!
+        if (Session["id"] != null)
+        {
+            DataTable sqlDt = new DataTable("Register");
+
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+            string sqlSelect = "select * from Register where curdate() <= date order by date asc";
+
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            //gonna use this to fill a data table
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            //filling the data table
+            sqlDa.Fill(sqlDt);
+
+            //loop through each row in the dataset, creating instances
+            //of our container class Event.  Fill each eveny with
+            //data from the rows, then dump them in a list.
+            List<Event> profile = new List<Event>();
+            for (int i = 0; i < sqlDt.Rows.Count; i++)
+            {
+
+                profile.Add(new Event
+                {
+                    eventId = Convert.ToInt32(sqlDt.Rows[i]["idregister"]),
+                    fname = sqlDt.Rows[i]["fName"].ToString(),
+                    lName = sqlDt.Rows[i]["lName"].ToString(),
+                    date = sqlDt.Rows[i]["date"].ToString(),
+                    time = sqlDt.Rows[i]["time"].ToString(),
+                    location = sqlDt.Rows[i]["location"].ToString()
+                });
+            }
+            //convert the list of events to an array and return!
+            return ProfilePage.ToArray();
+        }
+        else
+        {
+            //if they're not logged in, return an empty event
+            return new Event[0];
+        }
+    }
 }
  
 

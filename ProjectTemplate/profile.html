@@ -5,8 +5,44 @@
     <title>StudyBuddies</title>
     <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        function printProfile() {
+            var webMethod = "ProjectServices.asmx/ProfilePage";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d.length > 0) {
+
+                        $("#printProfile").empty();
+
+                        profileArray = msg.d;
+
+                        for (var i = 0; i < profileArray.length; i++) {
+
+                            var event = "<div>" +
+                                "Name:" + profileArray[i].fName + profileArray[i].lName + "<br>" +
+                                "School:" + profileArray[i].school + "<br>" +
+                                "Year:" + profileArray[i].year + "<br>" +
+                                "Campus:" + profileArray[i].campus + "<br>" +
+                                "</div>" +
+                                "<hr>"
+
+                            $("#printProfile").append(event);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+    </script>
 </head>
-<body>
+<body onload="printProfile()">
     <header>
         <div class="header">
             <h1>StudyBuddies</h1>
@@ -23,10 +59,7 @@
     </header>
     <div class="oval"></div>
     <div id="printProfile">
-        <h2>First Last </h2>
-        <h2>School</h2>
-        <h2>Year</h2>
-        <h2>Campus</h2>
+        
     </div>
 </body>
 </html>
