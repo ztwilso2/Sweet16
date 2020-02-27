@@ -9,64 +9,65 @@ using System.Data;
 
 namespace ProjectTemplate
 {
-	[WebService(Namespace = "http://tempuri.org/")]
-	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-	[System.ComponentModel.ToolboxItem(false)]
-	[System.Web.Script.Services.ScriptService]
+    [WebService(Namespace = "http://tempuri.org/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    [System.Web.Script.Services.ScriptService]
 
-	public class ProjectServices : System.Web.Services.WebService
-	{
-		////////////////////////////////////////////////////////////////////////
-		///replace the values of these variables with your database credentials
-		////////////////////////////////////////////////////////////////////////
-		private string dbID = "sweet16";
-		private string dbPass = "!!Sweet16";
-		private string dbName = "sweet16";
-		////////////////////////////////////////////////////////////////////////
-		
-		////////////////////////////////////////////////////////////////////////
-		///call this method anywhere that you need the connection string!
-		////////////////////////////////////////////////////////////////////////
-		private string getConString() {
-			return "SERVER=107.180.1.16; PORT=3306; DATABASE=" + dbName+"; UID=" + dbID + "; PASSWORD=" + dbPass;
-		}
-		////////////////////////////////////////////////////////////////////////
+    public class ProjectServices : System.Web.Services.WebService
+    {
+        ////////////////////////////////////////////////////////////////////////
+        ///replace the values of these variables with your database credentials
+        ////////////////////////////////////////////////////////////////////////
+        private string dbID = "sweet16";
+        private string dbPass = "!!Sweet16";
+        private string dbName = "sweet16";
+        ////////////////////////////////////////////////////////////////////////
 
-
-
-		/////////////////////////////////////////////////////////////////////////
-		//don't forget to include this decoration above each method that you want
-		//to be exposed as a web service!
-		[WebMethod(EnableSession = true)]
-		/////////////////////////////////////////////////////////////////////////
-		public string TestConnection()
-		{
-			try
-			{
-				string testQuery = "select * from testQuery";
-
-				////////////////////////////////////////////////////////////////////////
-				///here's an example of using the getConString method!
-				////////////////////////////////////////////////////////////////////////
-				MySqlConnection con = new MySqlConnection(getConString());
-				////////////////////////////////////////////////////////////////////////
-
-				MySqlCommand cmd = new MySqlCommand(testQuery, con);
-				MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-				DataTable table = new DataTable();
-				adapter.Fill(table);
-
-				return "Success";
-			}
-			catch (Exception e)
-			{
-				return "Something went wrong, please check your credentials and db name and try again.  Error: "+e.Message;
-			}
-		}
+        ////////////////////////////////////////////////////////////////////////
+        ///call this method anywhere that you need the connection string!
+        ////////////////////////////////////////////////////////////////////////
+        private string getConString()
+        {
+            return "SERVER=107.180.1.16; PORT=3306; DATABASE=" + dbName + "; UID=" + dbID + "; PASSWORD=" + dbPass;
+        }
+        ////////////////////////////////////////////////////////////////////////
 
 
 
-//Create New Account Logic//
+        /////////////////////////////////////////////////////////////////////////
+        //don't forget to include this decoration above each method that you want
+        //to be exposed as a web service!
+        [WebMethod(EnableSession = true)]
+        /////////////////////////////////////////////////////////////////////////
+        public string TestConnection()
+        {
+            try
+            {
+                string testQuery = "select * from testQuery";
+
+                ////////////////////////////////////////////////////////////////////////
+                ///here's an example of using the getConString method!
+                ////////////////////////////////////////////////////////////////////////
+                MySqlConnection con = new MySqlConnection(getConString());
+                ////////////////////////////////////////////////////////////////////////
+
+                MySqlCommand cmd = new MySqlCommand(testQuery, con);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+
+                return "Success";
+            }
+            catch (Exception e)
+            {
+                return "Something went wrong, please check your credentials and db name and try again.  Error: " + e.Message;
+            }
+        }
+
+
+
+        //Create New Account Logic//
         [WebMethod(EnableSession = true)]
         public void RequestAccount(string fName, string lName, string userName, string password, string email,
                                     string year, string college, string campus)
@@ -106,7 +107,7 @@ namespace ProjectTemplate
                 //the database!
             }
             catch (Exception e)
-            { 
+            {
             }
             sqlConnection.Close();
         }
@@ -237,52 +238,54 @@ namespace ProjectTemplate
                 return new Event[0];
             }
         }
-    }
-    //getEventInfo
-    [WebMethod(EnableSession = true)]
-    public Event[] ProfilePage()
-    {
 
-        //WE ONLY SHARE Events WITH LOGGED IN USERS!
-        if (Session["id"] != null)
+
+        //getEventInfo
+        [WebMethod(EnableSession = true)]
+        public Profile[] PersonalInfo()
         {
-            DataTable sqlDt = new DataTable("Register");
 
-            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
-            string sqlSelect = "select * from Register where curdate() <= date order by date asc";
-
-            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-
-            //gonna use this to fill a data table
-            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
-            //filling the data table
-            sqlDa.Fill(sqlDt);
-
-            //loop through each row in the dataset, creating instances
-            //of our container class Event.  Fill each eveny with
-            //data from the rows, then dump them in a list.
-            List<Event> profile = new List<Event>();
-            for (int i = 0; i < sqlDt.Rows.Count; i++)
+            //WE ONLY SHARE Events WITH LOGGED IN USERS!
+            if (Session["id"] != null)
             {
+                DataTable sqlDt = new DataTable("Register");
 
-                profile.Add(new Event
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+                string sqlSelect = "select * from Register where ";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Event.  Fill each eveny with
+                //data from the rows, then dump them in a list.
+                List<Profile> profile = new List<Profile>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    eventId = Convert.ToInt32(sqlDt.Rows[i]["idregister"]),
-                    fname = sqlDt.Rows[i]["fName"].ToString(),
-                    lName = sqlDt.Rows[i]["lName"].ToString(),
-                    date = sqlDt.Rows[i]["date"].ToString(),
-                    time = sqlDt.Rows[i]["time"].ToString(),
-                    location = sqlDt.Rows[i]["location"].ToString()
-                });
+
+                    profile.Add(new Profile
+                    {
+                        registerId = Convert.ToInt32(sqlDt.Rows[i]["idregister"]),
+                        fName = sqlDt.Rows[i]["fName"].ToString(),
+                        lName = sqlDt.Rows[i]["lName"].ToString(),
+                        year = sqlDt.Rows[i]["date"].ToString(),
+                        college = sqlDt.Rows[i]["time"].ToString(),
+                        campus = sqlDt.Rows[i]["location"].ToString()
+                    });
+                }
+                //convert the list of events to an array and return!
+                return profile.ToArray();
             }
-            //convert the list of events to an array and return!
-            return ProfilePage.ToArray();
-        }
-        else
-        {
-            //if they're not logged in, return an empty event
-            return new Event[0];
+            else
+            {
+                //if they're not logged in, return an empty event
+                return new Profile[0];
+            }
         }
     }
 }
