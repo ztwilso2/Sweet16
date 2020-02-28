@@ -60,6 +60,7 @@ header {
     overflow: auto;
     padding-bottom: 20px;
 }
+
 header h1 {
         text-align: center;
         font-family: Rubik;
@@ -67,37 +68,43 @@ header h1 {
         margin-left: 0px;
         margin-bottom: 5px;
     }
+
 header nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 30%;
-    float: right;
-    overflow: hidden;
-    background-color: #333;
-}
-header nav li {
-    display: inline-block;
-    float: right;
-}
-header li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-header li a:hover {
-        background-color: #111;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 30%;
+        float: right;
+        overflow: hidden;
+        background-color: #333;
     }
-#layout{
-    display:block;
+
+header nav li {
+        display: inline-block;
+        float: right;
+    }
+
+header li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+header li a:hover {
+            background-color: #111;
+        }
+
+#layout {
+    display: block;
 }
+
 #create {
     width: 25%;
     background: #ba454b;
     float: left;
-    padding: 20px;
+    padding: 2%;
 }
 
 h2 {
@@ -108,17 +115,26 @@ h2 {
     width: 25%;
     background: #ba454b;
     float: left;
-    padding: 20px;
+    padding: 2%;
     clear: left;
     
+}
+
+#newClassName, #newDate {
+    width: 100%;
+}
+
+#newDesc, #newTime, #newLocation {
+    width: 103%;
 }
 
 #messages {
     float: right;
     background: #a3a2a2;
-    padding: 20px;
+    padding: 1%;
     width: 67%;
 }
+
 section:after {
     content: "";
     display: table;
