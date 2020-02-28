@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
 
+        var sessionId; 
 
         function logOn() {
             var webMethod = "ProjectServices.asmx/LogOn";
@@ -26,8 +27,10 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    if (msg.d) {
-                        window.location.assign("./homepage.html")
+                    if (msg.d > -1) {
+                        sessionId = msg.d;
+                        localStorage.setItem("sessionId", msg.d); 
+                        window.location.assign("./homepage.html");
                     }
                     else {
                         $("#errorMessage").html("Failed to log in. Please check your password and username.");

@@ -8,10 +8,23 @@
     <script type="text/javascript">
 
         document.addEventListener("load", loadEvents());
+        
+
+        //accessing the user ID for the session on each page You can use this format
+        //1. Store it in a local variable and go from there. For some reason, only works w/in scope of function
+        //2. use the localStorage.getItem("sessionId") directly
+        function accessSessionId() {
+            userId = localStorage.getItem("sessionId");
+            alert(userId);
+            alert(localStorage.getItem("sessionId"));
+        }
+
 
         function goToLogOn() {
             window.location.assign("./loginPage.html")
         }
+
+
 
         function currentDate() {
             var today = new Date(); 

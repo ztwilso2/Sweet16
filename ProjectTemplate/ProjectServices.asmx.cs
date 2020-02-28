@@ -30,14 +30,13 @@ namespace ProjectTemplate
 		private string getConString() {
 			return "SERVER=107.180.1.16; PORT=3306; DATABASE=" + dbName+"; UID=" + dbID + "; PASSWORD=" + dbPass;
 		}
-		////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
 
 
-
-		/////////////////////////////////////////////////////////////////////////
-		//don't forget to include this decoration above each method that you want
-		//to be exposed as a web service!
-		[WebMethod(EnableSession = true)]
+        /////////////////////////////////////////////////////////////////////////
+        //don't forget to include this decoration above each method that you want
+        //to be exposed as a web service!
+        [WebMethod(EnableSession = true)]
 		/////////////////////////////////////////////////////////////////////////
 		public string TestConnection()
 		{
@@ -114,9 +113,10 @@ namespace ProjectTemplate
 
         //Login Logic//
         [WebMethod(EnableSession = true)]
-        public bool LogOn(string uid, string pass)
+        public int LogOn(string uid, string pass)
         {
-            bool success = false;
+            //bool success = false;
+            int userId=-1;
 
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
             string sqlSelect = "SELECT idRegister FROM Register WHERE (email=@idValue and password=@passValue) or (userName=@idValue and password=@passValue);";
@@ -135,10 +135,11 @@ namespace ProjectTemplate
             if (sqlDt.Rows.Count > 0)
             {
                 Session["id"] = sqlDt.Rows[0]["idRegister"];
-                success = true;
+                //success = true;
+                userId = Convert.ToInt32(sqlDt.Rows[0]["idRegister"]);
             }
 
-            return success;
+            return userId;
         }
 
         //Log Off Method
@@ -155,39 +156,46 @@ namespace ProjectTemplate
         [WebMethod(EnableSession = true)]
         public string NewEvent(string className, string desc, string date, string time, string location)
         {
-            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
-            //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
-            //does is tell mySql server to return the primary key of the last inserted row.
-            string sqlSelect = "insert into events (className, descr, date, time, location) " +
-                "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue); SELECT LAST_INSERT_ID();";
-
-            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-
-            //sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(idRegister));
-            sqlCommand.Parameters.AddWithValue("@classNameValue", HttpUtility.UrlDecode(className));
-            sqlCommand.Parameters.AddWithValue("@descValue", HttpUtility.UrlDecode(desc));
-            sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
-            sqlCommand.Parameters.AddWithValue("@timeValue", HttpUtility.UrlDecode(time));
-            sqlCommand.Parameters.AddWithValue("@locationValue", HttpUtility.UrlDecode(location));
-            sqlConnection.Open();
-            //we're using a try/catch so that if the query errors out we can handle it gracefully
-            //by closing the connection and moving on
-            try
+            if (Session["id"] != null)
             {
-                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
-                //here, you could use this accountID for additional queries regarding
-                //the requested account.  Really this is just an example to show you
-                //a query where you get the primary key of the inserted row back from
-                //the database!
-                sqlConnection.Close();
-                return "success";
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+                //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
+                //does is tell mySql server to return the primary key of the last inserted row.
+                string sqlSelect = "insert into events (className, descr, date, time, location) " +
+                    "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue); SELECT LAST_INSERT_ID();";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                //sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(idRegister));
+                sqlCommand.Parameters.AddWithValue("@classNameValue", HttpUtility.UrlDecode(className));
+                sqlCommand.Parameters.AddWithValue("@descValue", HttpUtility.UrlDecode(desc));
+                sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
+                sqlCommand.Parameters.AddWithValue("@timeValue", HttpUtility.UrlDecode(time));
+                sqlCommand.Parameters.AddWithValue("@locationValue", HttpUtility.UrlDecode(location));
+                sqlConnection.Open();
+                //we're using a try/catch so that if the query errors out we can handle it gracefully
+                //by closing the connection and moving on
+                try
+                {
+                    int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                    //here, you could use this accountID for additional queries regarding
+                    //the requested account.  Really this is just an example to show you
+                    //a query where you get the primary key of the inserted row back from
+                    //the database!
+                    sqlConnection.Close();
+                    return "success";
+                }
+                catch (Exception e)
+                {
+                    return "error" + e.Message;
+                }
+                //sqlConnection.Close();
             }
-            catch (Exception e)
+            else
             {
-                return "error" + e.Message;
+                return "Please log in";
             }
-            //sqlConnection.Close();
         }
 
         //getEventInfo
