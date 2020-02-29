@@ -284,9 +284,9 @@ namespace ProjectTemplate
                         registerId = Convert.ToInt32(sqlDt.Rows[i]["idregister"]),
                         fName = sqlDt.Rows[i]["fName"].ToString(),
                         lName = sqlDt.Rows[i]["lName"].ToString(),
-                        year = sqlDt.Rows[i]["date"].ToString(),
-                        college = sqlDt.Rows[i]["time"].ToString(),
-                        campus = sqlDt.Rows[i]["location"].ToString()
+                        year = sqlDt.Rows[i]["year"].ToString(),
+                        college = sqlDt.Rows[i]["college"].ToString(),
+                        campus = sqlDt.Rows[i]["campus"].ToString()
                     });
                 }
                 //convert the list of events to an array and return!
