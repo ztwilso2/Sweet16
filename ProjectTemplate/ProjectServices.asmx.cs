@@ -250,7 +250,7 @@ namespace ProjectTemplate
         }
 
 
-        //getEventInfo
+        //getProfileInfo
         [WebMethod(EnableSession = true)]
         public Profile[] PersonalInfo()
         {
@@ -261,7 +261,7 @@ namespace ProjectTemplate
                 DataTable sqlDt = new DataTable("Register");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
-                string sqlSelect = "select * from Register where ";
+                string sqlSelect = "select * from Register where sessionId = idRegister ";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
