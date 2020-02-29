@@ -146,7 +146,9 @@ section:after {
     width: 170px;
     background-color: #a3a2a2;
     border-radius: 50%;
-    text-align:center;
+    text-align: center;
+    margin: auto;
+    display: table;
 }
 #printProfile{
     text-align:center;
