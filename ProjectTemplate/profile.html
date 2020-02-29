@@ -18,6 +18,7 @@
         }
         function printProfile() {
             var webMethod = "ProjectServices.asmx/PersonalInfo";
+            var uid = localStorage.getItem("sessionId");
             $.ajax({
                 type: "POST",
                 url: webMethod,
