@@ -176,4 +176,9 @@ section:after {
 }
 #printProfile{
     text-align:center;
+    font-size: 25pt;
+    font-family: Rubik;
+}
+.reportButton{
+    list-style-type:none;
 }
