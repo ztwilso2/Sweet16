@@ -7,21 +7,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        function accessSessionId() {
-
-            userId = localStorage.getItem("sessionId");
-
-            alert(userId);
-
-            alert(localStorage.getItem("sessionId"));
-
-        }
+               
         function printProfile() {
             var webMethod = "ProjectServices.asmx/PersonalInfo";
             var uid = localStorage.getItem("sessionId");
+            var parameters = "{\"sessionId\":\"" + encodeURI(uid) + "\"}";
+ 
             $.ajax({
                 type: "POST",
                 url: webMethod,
+                data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
@@ -34,10 +29,10 @@
                         for (var i = 0; i < profileArray.length; i++) {
 
                             var event = "<div>" +
-                                "Name:" + profileArray[i].fName + profileArray[i].lName + "<br>" +
-                                "School:" + profileArray[i].school + "<br>" +
-                                "Year:" + profileArray[i].year + "<br>" +
-                                "Campus:" + profileArray[i].campus + "<br>" +
+                                "Name: " + profileArray[i].fName + " " + profileArray[i].lName + "<br>" +
+                                "School: " + profileArray[i].college + "<br>" +
+                                "Year: " + profileArray[i].year + "<br>" +
+                                "Campus: " + profileArray[i].campus + "<br>" +
                                 "</div>" +
                                 "<hr>"
 
