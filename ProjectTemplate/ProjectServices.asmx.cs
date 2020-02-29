@@ -236,7 +236,9 @@ namespace ProjectTemplate
                         date = sqlDt.Rows[i]["date"].ToString(),
                         time = sqlDt.Rows[i]["time"].ToString(),
                         location = sqlDt.Rows[i]["location"].ToString(),
-                        creatorId = Convert.ToInt32(sqlDt.Rows[i]["creatorId"])
+                        creatorId = Convert.ToInt32(sqlDt.Rows[i]["creatorId"]),
+                        rsvpCount = Convert.ToInt32(sqlDt.Rows[i]["rsvpCount"])
+
                     });
                 }
 
@@ -247,6 +249,42 @@ namespace ProjectTemplate
             {
                 //if they're not logged in, return an empty event
                 return new Event[0];
+            }
+        }
+
+        //Update RSVP
+        [WebMethod(EnableSession = true)]
+        public void UpdateRSVP(string eventId, string rsvpCount)
+        {
+            //WRAPPING THE WHOLE THING IN AN IF STATEMENT TO CHECK IF THEY ARE AN ADMIN!
+            if (Session["id"] != null)
+            {
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+                //this is a simple update, with parameters to pass in values
+                string sqlSelect = "update events set rsvpCount = @rsvpCountValue where idevents = @eventIdValue";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@eventIdValue", HttpUtility.UrlDecode(eventId));
+                sqlCommand.Parameters.AddWithValue("@rsvpCountValue", HttpUtility.UrlDecode(rsvpCount));
+                
+
+                sqlConnection.Open();
+                //we're using a try/catch so that if the query errors out we can handle it gracefully
+                //by closing the connection and moving on
+                try
+                {
+                    sqlCommand.ExecuteNonQuery();
+                                                          
+                }
+                catch (Exception e)
+                {
+                    
+                }
+
+                sqlConnection.Close();
+
             }
         }
 

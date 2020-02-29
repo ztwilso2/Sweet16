@@ -4,160 +4,9 @@
     <meta charset="utf-8" />
     <title>StudyBuddies</title>
     <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
-
-        document.addEventListener("load", loadEvents());
-        
-
-        //accessing the user ID for the session on each page You can use this format
-        //1. Store it in a local variable and go from there. For some reason, only works w/in scope of function
-        //2. use the localStorage.getItem("sessionId") directly
-        function accessSessionId() {
-            userId = localStorage.getItem("sessionId");
-            alert(userId);
-            alert(localStorage.getItem("sessionId"));
-        }
-
-
-        function goToLogOn() {
-            window.location.assign("./loginPage.html")
-        }
-
-
-
-        function currentDate() {
-            var today = new Date(); 
-            var day = today.getDate()
-            var month = today.getMonth() + 1
-            var year = today.getFullYear()
-
-            month = (month < 10 ? "0" : "") + month;
-            day = (day < 10 ? "0" : "") + day;
-
-            var date = year + "-" + month + "-" + day
-
-            document.getElementById('newDate').value = date;  
-        }
-
-        var rsvpCount = 0; 
-        function RSVP() {
-            rsvpCount += 1;
-            alert(rsvpCount);
-        }
-
-        //LogOffFunction
-        function LogOff() {
-
-            var webMethod = "ProjectServices.asmx/LogOff";
-            $.ajax({
-                type: "POST",
-                url: webMethod,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg.d) {
-                        //we logged off, so go back to logon page
-                        goToLogOn();
-                        
-                    }
-                    else {
-                        alert("Error")
-                    }
-                },
-                error: function (e) {
-                    alert("Error with the server. Please try again.");
-                }
-            });
-        }
-
-        function newEvent() {
-            var webMethod = "ProjectServices.asmx/NewEvent";
-            var creatorId = localStorage.getItem("sessionId");
-            var className = $('#newClassName').val();
-            var desc = $('#newDesc').val();
-            var date = $('#newDate').val();
-            var time = $('#newTime').val();
-            var location = $('#newLocation').val();
-            var rsvpCount = 0; 
-            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location) + "\",\"creatorId\":\"" + encodeURI(creatorId) + "\",\"rsvpCount\":\"" + encodeURI(rsvpCount) + "\"}";
-            $.ajax({
-                type: "POST",
-                url: webMethod,
-                data: parameters,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    alert("Event added.");
-                },
-                error: function (e) {
-                    alert("An error was encountered. Please try again.");
-                }
-            });
-        }
-
-        var eventsArray;
-
-        function loadEvents() {
-            var webMethod = "ProjectServices.asmx/GetEvents";
-            
-            $.ajax({
-                type: "POST",
-                url: webMethod,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg.d.length > 0) {
-
-                        $("#eventsList").empty();
-
-                        eventsArray = msg.d;
-
-                        for (var i = 0; i < eventsArray.length; i++) {
-                           
-                            var event = "<div class='eventCard'>" +
-                                "<div class='creatorBar'>" + eventsArray[i].creatorId +"'s Event: </div> <br>" +
-                                "Class: " + eventsArray[i].className + "<br>" +
-                                "Description: " + eventsArray[i].description + "<br>" +
-                                "Date: " + eventsArray[i].date + "<br>" +
-                                "Time: " + eventsArray[i].time + "<br>" +
-                                "Location: " + eventsArray[i].location + "<br>" +
-                                "<div class='bottomBar'>" +
-                                "<div class='rsvpDiv'>People Attending: </div>" +
-                                "<button type='button' onclick='RSVP()' class='rsvpButton'>RSVP</button>" +
-                                "</div>" +
-                                "</div>" +
-                                "<hr>";
-
-                            if (eventsArray[i].creatorId == localStorage.getItem("sessionId")){
-
-                                var event = "<div class='eventCard'>" +
-                                    "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
-                                    "Class: " + eventsArray[i].className + "<br>" +
-                                    "Description: " + eventsArray[i].description + "<br>" +
-                                    "Date: " + eventsArray[i].date + "<br>" +
-                                    "Time: " + eventsArray[i].time + "<br>" +
-                                    "Location: " + eventsArray[i].location + "<br>" +
-                                    "</div>" +
-                                    "<hr>";
-
-
-                                $("#myEventsList").append(event);
-                            }
-
-
-                            $("#eventsList").append(event);
-                        }
-
-                    }
-                },
-                error: function (e) {
-                    alert("Can't load events.");
-                }
-            });
-        }
-    </script>
+    
 </head>
+
 <body onload="currentDate();">
     <header>
         <div class="header">
@@ -242,7 +91,7 @@
                             </select>
                         </td>
                     </tr>
-                    <tr><td><button type="button" onclick="newEvent(); loadEvents()">Create</button> </td></tr>
+                    <tr><td><button type="button" onclick="newEvent()" id="createButton">Create</button> </td></tr>
                 </table>
 
             </form>
@@ -264,6 +113,163 @@
         </aside>
 
     </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener("load", loadEvents());
+        document.getElementById("createButton").addEventListener("click", loadEvents);
+
+
+        //accessing the user ID for the session on each page You can use this format
+        //1. Store it in a local variable and go from there. For some reason, only works w/in scope of function
+        //2. use the localStorage.getItem("sessionId") directly
+        function accessSessionId() {
+            userId = localStorage.getItem("sessionId");
+            alert(userId);
+            alert(localStorage.getItem("sessionId"));
+        }
+
+
+        function goToLogOn() {
+            window.location.assign("./loginPage.html")
+        }
+
+
+
+        function currentDate() {
+            var today = new Date();
+            var day = today.getDate()
+            var month = today.getMonth() + 1
+            var year = today.getFullYear()
+
+            month = (month < 10 ? "0" : "") + month;
+            day = (day < 10 ? "0" : "") + day;
+
+            var date = year + "-" + month + "-" + day
+
+            document.getElementById('newDate').value = date;
+        }
+
+        var rsvpCount = 0;
+        function RSVP() {
+            rsvpCount += 1;
+            alert(rsvpCount);
+        }
+
+        //LogOffFunction
+        function LogOff() {
+
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        //we logged off, so go back to logon page
+                        goToLogOn();
+
+                    }
+                    else {
+                        alert("Error")
+                    }
+                },
+                error: function (e) {
+                    alert("Error with the server. Please try again.");
+                }
+            });
+        }
+
+        function newEvent() {
+            var webMethod = "ProjectServices.asmx/NewEvent";
+            var creatorId = localStorage.getItem("sessionId");
+            var className = $('#newClassName').val();
+            var desc = $('#newDesc').val();
+            var date = $('#newDate').val();
+            var time = $('#newTime').val();
+            var location = $('#newLocation').val();
+            var rsvpCount = 0;
+            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location) + "\",\"creatorId\":\"" + encodeURI(creatorId) + "\",\"rsvpCount\":\"" + encodeURI(rsvpCount) + "\"}";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    alert("Event added.");
+                },
+                error: function (e) {
+                    alert("An error was encountered. Please try again.");
+                }
+            });
+        }
+
+        var eventsArray;
+
+        function loadEvents() {
+            var webMethod = "ProjectServices.asmx/GetEvents";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d.length > 0) {
+
+                        $("#eventsList").empty();
+
+                        eventsArray = msg.d;
+
+                        for (var i = 0; i < eventsArray.length; i++) {
+
+                            var event = "<div class='eventCard'>" +
+                                "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
+                                "Class: " + eventsArray[i].className + "<br>" +
+                                "Description: " + eventsArray[i].description + "<br>" +
+                                "Date: " + eventsArray[i].date + "<br>" +
+                                "Time: " + eventsArray[i].time + "<br>" +
+                                "Location: " + eventsArray[i].location + "<br>" +
+                                "<div class='bottomBar'>" +
+                                "<div class='rsvpDiv'>People Attending: " + eventsArray[i].rsvpCount + "</div>" +
+                                "<button type='button' onclick='RSVP()' class='rsvpButton'>RSVP</button>" +
+                                "</div>" +
+                                "</div>" +
+                                "<hr>";
+
+                            if (eventsArray[i].creatorId == localStorage.getItem("sessionId")) {
+
+                                var event = "<div class='eventCard'>" +
+                                    "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
+                                    "Class: " + eventsArray[i].className + "<br>" +
+                                    "Description: " + eventsArray[i].description + "<br>" +
+                                    "Date: " + eventsArray[i].date + "<br>" +
+                                    "Time: " + eventsArray[i].time + "<br>" +
+                                    "Location: " + eventsArray[i].location + "<br>" +
+                                    "<div class='bottomBar'>" +
+                                    "<div class='rsvpDiv'>People Attending: " + eventsArray[i].rsvpCount + "</div>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "<hr>";
+
+
+                                $("#myEventsList").append(event);
+                            }
+
+
+                            $("#eventsList").append(event);
+                        }
+
+                    }
+                },
+                error: function (e) {
+                    alert("Can't load events.");
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
