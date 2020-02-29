@@ -252,7 +252,7 @@ namespace ProjectTemplate
 
         //getProfileInfo
         [WebMethod(EnableSession = true)]
-        public Profile[] PersonalInfo()
+        public Profile[] PersonalInfo(string sessionId)
         {
 
             //WE ONLY SHARE Events WITH LOGGED IN USERS!
@@ -261,11 +261,12 @@ namespace ProjectTemplate
                 DataTable sqlDt = new DataTable("Register");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
-                string sqlSelect = "select * from Register where sessionId = idRegister ";
+                string sqlSelect = "select * from Register where @idRegisterValue = idRegister ";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
 
+                sqlCommand.Parameters.AddWithValue("@idRegisterValue", HttpUtility.UrlDecode(sessionId));
                 //gonna use this to fill a data table
                 MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
                 //filling the data table
