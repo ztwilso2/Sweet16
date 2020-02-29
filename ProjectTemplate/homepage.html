@@ -79,7 +79,8 @@
             var date = $('#newDate').val();
             var time = $('#newTime').val();
             var location = $('#newLocation').val();
-            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location) + "\",\"creatorId\":\"" + encodeURI(creatorId) +"\"}";
+            var rsvpCount = 0; 
+            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location) + "\",\"creatorId\":\"" + encodeURI(creatorId) + "\",\"rsvpCount\":\"" + encodeURI(rsvpCount) + "\"}";
             $.ajax({
                 type: "POST",
                 url: webMethod,

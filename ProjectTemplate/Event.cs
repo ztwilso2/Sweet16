@@ -14,5 +14,6 @@ namespace ProjectTemplate
         public string time;
         public string location;
         public int creatorId;
+        public int rsvpCount;
     }
 }
