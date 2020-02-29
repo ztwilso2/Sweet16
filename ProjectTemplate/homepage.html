@@ -40,6 +40,12 @@
             document.getElementById('newDate').value = date;  
         }
 
+        var rsvpCount = 0; 
+        function RSVP() {
+            rsvpCount += 1;
+            alert(rsvpCount);
+        }
+
         //LogOffFunction
         function LogOff() {
 
@@ -67,12 +73,13 @@
 
         function newEvent() {
             var webMethod = "ProjectServices.asmx/NewEvent";
+            var creatorId = localStorage.getItem("sessionId");
             var className = $('#newClassName').val();
             var desc = $('#newDesc').val();
             var date = $('#newDate').val();
             var time = $('#newTime').val();
             var location = $('#newLocation').val();
-            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location)+"\"}";
+            var parameters = "{\"className\":\"" + encodeURI(className) + "\",\"desc\":\"" + encodeURI(desc) + "\",\"date\":\"" + encodeURI(date) + "\",\"time\":\"" + encodeURI(time) + "\",\"location\":\"" + encodeURI(location) + "\",\"creatorId\":\"" + encodeURI(creatorId) +"\"}";
             $.ajax({
                 type: "POST",
                 url: webMethod,
@@ -92,6 +99,7 @@
 
         function loadEvents() {
             var webMethod = "ProjectServices.asmx/GetEvents";
+            
             $.ajax({
                 type: "POST",
                 url: webMethod,
@@ -106,14 +114,36 @@
 
                         for (var i = 0; i < eventsArray.length; i++) {
                            
-                            var event = "<div>" +
-                                "Class:" + eventsArray[i].className + "<br>" +
-                                "Description:" + eventsArray[i].description + "<br>" +
-                                "Date:" + eventsArray[i].date + "<br>" +
-                                "Time:" + eventsArray[i].time + "<br>" +
-                                "Location:" + eventsArray[i].location + "<br>" +
+                            var event = "<div class='eventCard'>" +
+                                "<div class='creatorBar'>" + eventsArray[i].creatorId +"'s Event: </div> <br>" +
+                                "Class: " + eventsArray[i].className + "<br>" +
+                                "Description: " + eventsArray[i].description + "<br>" +
+                                "Date: " + eventsArray[i].date + "<br>" +
+                                "Time: " + eventsArray[i].time + "<br>" +
+                                "Location: " + eventsArray[i].location + "<br>" +
+                                "<div class='bottomBar'>" +
+                                "<div class='rsvpDiv'>People Attending: </div>" +
+                                "<button type='button' onclick='RSVP()' class='rsvpButton'>RSVP</button>" +
                                 "</div>" +
-                                "<hr>"
+                                "</div>" +
+                                "<hr>";
+
+                            if (eventsArray[i].creatorId == localStorage.getItem("sessionId")){
+
+                                var event = "<div class='eventCard'>" +
+                                    "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
+                                    "Class: " + eventsArray[i].className + "<br>" +
+                                    "Description: " + eventsArray[i].description + "<br>" +
+                                    "Date: " + eventsArray[i].date + "<br>" +
+                                    "Time: " + eventsArray[i].time + "<br>" +
+                                    "Location: " + eventsArray[i].location + "<br>" +
+                                    "</div>" +
+                                    "<hr>";
+
+
+                                $("#myEventsList").append(event);
+                            }
+
 
                             $("#eventsList").append(event);
                         }
@@ -217,16 +247,18 @@
             </form>
         </article>
 
-        <article id="messages">
-            This is the message board
-            <p>Hi!!!!</p>
+        <article id="eventsListDiv">
+            <h2>Upcoming Events!</h2>
+            <div id="eventsList">
+
+            </div>
         </article>
 
 
         <aside id="eventBar">
             <form action="/" method="post">
-                <h3>Upcoming Events!</h3>
-                <div id="eventsList"></div>
+                <h3>My Events:</h3>
+                <div id="myEventsList"></div>
             </form>
         </aside>
 

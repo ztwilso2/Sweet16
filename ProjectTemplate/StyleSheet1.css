@@ -19,6 +19,7 @@
     margin: auto;
     color: red;
 }
+
 /*Register Page CSS*/
 #registerFormDiv {
     text-align: center;
@@ -128,11 +129,34 @@ h2 {
     width: 103%;
 }
 
-#messages {
+#eventsListDiv {
     float: right;
     background: #a3a2a2;
     padding: 1%;
     width: 67%;
+}
+
+.eventCard {
+    padding: 2px;
+    border: 2px solid black;
+}
+
+.creatorBar {
+    padding: 2px;
+    border-bottom: 2px solid black;
+}
+
+.bottomBar {
+    border-top: 2px solid black;
+    text-align: right;
+}
+
+.rsvpButton{
+    padding: 2px;
+}
+
+.rsvpDiv {
+    float: left;
 }
 
 section:after {

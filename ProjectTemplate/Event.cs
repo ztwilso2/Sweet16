@@ -13,5 +13,6 @@ namespace ProjectTemplate
         public string date;
         public string time;
         public string location;
+        public int creatorId;
     }
 }

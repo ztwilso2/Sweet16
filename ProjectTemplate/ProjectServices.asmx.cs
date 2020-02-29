@@ -154,15 +154,15 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public string NewEvent(string className, string desc, string date, string time, string location)
+        public string NewEvent(string className, string desc, string date, string time, string location, string creatorId)
         {
             if (Session["id"] != null)
             {
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
                 //the only thing fancy about this query is SELECT LAST_INSERT_ID() at the end.  All that
                 //does is tell mySql server to return the primary key of the last inserted row.
-                string sqlSelect = "insert into events (className, descr, date, time, location) " +
-                    "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue); SELECT LAST_INSERT_ID();";
+                string sqlSelect = "insert into events (className, descr, date, time, location, creatorId) " +
+                    "values(@classNameValue, @descValue, @dateValue, @timeValue, @locationValue, @creatorIdValue); SELECT LAST_INSERT_ID();";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -173,6 +173,7 @@ namespace ProjectTemplate
                 sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
                 sqlCommand.Parameters.AddWithValue("@timeValue", HttpUtility.UrlDecode(time));
                 sqlCommand.Parameters.AddWithValue("@locationValue", HttpUtility.UrlDecode(location));
+                sqlCommand.Parameters.AddWithValue("@creatorIdValue", HttpUtility.UrlDecode(creatorId));
                 sqlConnection.Open();
                 //we're using a try/catch so that if the query errors out we can handle it gracefully
                 //by closing the connection and moving on
@@ -233,9 +234,11 @@ namespace ProjectTemplate
                         description = sqlDt.Rows[i]["descr"].ToString(),
                         date = sqlDt.Rows[i]["date"].ToString(),
                         time = sqlDt.Rows[i]["time"].ToString(),
-                        location = sqlDt.Rows[i]["location"].ToString()
+                        location = sqlDt.Rows[i]["location"].ToString(),
+                        creatorId = Convert.ToInt32(sqlDt.Rows[i]["creatorId"])
                     });
                 }
+
                 //convert the list of events to an array and return!
                 return events.ToArray();
             }
