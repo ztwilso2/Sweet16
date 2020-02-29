@@ -240,7 +240,7 @@ namespace ProjectTemplate
         }
 
 
-        //getEventInfo
+        //getProfileInfo
         [WebMethod(EnableSession = true)]
         public Profile[] PersonalInfo()
         {
