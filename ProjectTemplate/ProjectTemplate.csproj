@@ -98,6 +98,7 @@
     <Content Include="loginPage.html" />
     <Content Include="index.html" />
     <Content Include="ProjectServices.asmx" />
+    <Content Include="reportProfile.html" />
     <Content Include="StyleSheet1.css" />
     <Content Include="Web.config" />
   </ItemGroup>
