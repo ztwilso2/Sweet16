@@ -123,11 +123,11 @@
         //accessing the user ID for the session on each page You can use this format
         //1. Store it in a local variable and go from there. For some reason, only works w/in scope of function
         //2. use the localStorage.getItem("sessionId") directly
-        function accessSessionId() {
-            userId = localStorage.getItem("sessionId");
-            alert(userId);
-            alert(localStorage.getItem("sessionId"));
-        }
+        
+            //userId = localStorage.getItem("sessionId");
+           // alert(userId);
+            //alert(localStorage.getItem("sessionId"));
+        
 
 
         function goToLogOn() {
@@ -150,16 +150,69 @@
             document.getElementById('newDate').value = date;
         }
 
-        var rsvpCount = 0;
-        function RSVP() {
-            rsvpCount += 1;
-            alert(rsvpCount);
+        var rsvpCount;
+        function RSVP(eventId) {
+            var webMethod = "ProjectServices.asmx/GetRSVPCount";
+            var parameters = "{\"eventId\":\"" + encodeURI(eventId) + "\"}";
+            
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        
+                        rsvpCount = Number(msg.d[0].rsvpCount);
+                        rsvpCount++;
+
+                    }
+                    else {
+                        alert("Error")
+                    }
+                },
+                error: function (e) {
+                    alert("Error with the server. Please try again.");
+                }
+            });
+
+            
+
+            var webMethod2 = "ProjectServices.asmx/UpdateRSVP";
+            var parameters2 = "{\"eventId\":\"" + encodeURI(eventId) + "\",\"rsvpCount\":\"" + encodeURI(rsvpCount) + "\"}";
+
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: webMethod2,
+                data: parameters2,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        
+                    }
+                    else {
+                        alert("Error")
+                    }
+                },
+                error: function (e) {
+                    alert("Error with the server. Please try again.");
+                }
+            });
+
+            loadEvents();
+            document.getElementById(eventId).disabled = true;
+         
         }
 
         //LogOffFunction
         function LogOff() {
 
             var webMethod = "ProjectServices.asmx/LogOff";
+
             $.ajax({
                 type: "POST",
                 url: webMethod,
@@ -176,7 +229,7 @@
                     }
                 },
                 error: function (e) {
-                    alert("Error with the server. Please try again.");
+                    
                 }
             });
         }
@@ -206,27 +259,64 @@
             });
         }
 
+                
         var eventsArray;
+        var usersArray;
 
         function loadEvents() {
             var webMethod = "ProjectServices.asmx/GetEvents";
+            var webMethod2 = "ProjectServices.asmx/UserList";
+            var firstName;
+            var lastName;
 
+            $.ajax({
+                type: "POST",
+                url: webMethod2,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d.length > 0) {
+
+                        usersArray = msg.d;
+                                                
+                    }
+                    else {
+                        alert("Error loading page. Please refresh.")
+                    }
+                },
+                error: function (e) {
+                    alert("Can't load events." + e);
+                }
+            });
+
+             
             $.ajax({
                 type: "POST",
                 url: webMethod,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
+                    
                     if (msg.d.length > 0) {
 
                         $("#eventsList").empty();
+                        $("#myEventsList").empty();
 
                         eventsArray = msg.d;
-
+                        
                         for (var i = 0; i < eventsArray.length; i++) {
 
+                            for (var u = 0; u < usersArray.length; u++) {
+                                if (eventsArray[i].creatorId == usersArray[u].registerId) {
+                                    firstName = usersArray[u].fName;
+                                    lastName = usersArray[u].lName;
+                                    }
+                            }
+
+                            
+
                             var event = "<div class='eventCard'>" +
-                                "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
+                                "<div class='creatorBar'>" + firstName + " " + lastName+ "'s Event: </div> <br>" +
                                 "Class: " + eventsArray[i].className + "<br>" +
                                 "Description: " + eventsArray[i].description + "<br>" +
                                 "Date: " + eventsArray[i].date + "<br>" +
@@ -234,7 +324,7 @@
                                 "Location: " + eventsArray[i].location + "<br>" +
                                 "<div class='bottomBar'>" +
                                 "<div class='rsvpDiv'>People Attending: " + eventsArray[i].rsvpCount + "</div>" +
-                                "<button type='button' onclick='RSVP()' class='rsvpButton'>RSVP</button>" +
+                                "<button type='button' onclick='RSVP(value)' class='rsvpButton' value='" + eventsArray[i].eventId + "' id='" + eventsArray[i].eventId +"'> RSVP</button> " +
                                 "</div>" +
                                 "</div>" +
                                 "<hr>";
@@ -242,7 +332,7 @@
                             if (eventsArray[i].creatorId == localStorage.getItem("sessionId")) {
 
                                 var event = "<div class='eventCard'>" +
-                                    "<div class='creatorBar'>" + eventsArray[i].creatorId + "'s Event: </div> <br>" +
+                                    "<div class='creatorBar'>" + firstName + " " + lastName + "'s Event: </div> <br>" +
                                     "Class: " + eventsArray[i].className + "<br>" +
                                     "Description: " + eventsArray[i].description + "<br>" +
                                     "Date: " + eventsArray[i].date + "<br>" +
@@ -260,12 +350,13 @@
 
 
                             $("#eventsList").append(event);
+                            
                         }
 
                     }
                 },
                 error: function (e) {
-                    alert("Can't load events.");
+                    alert("Can't load events." + e);
                 }
             });
         }

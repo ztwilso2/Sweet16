@@ -252,9 +252,55 @@ namespace ProjectTemplate
             }
         }
 
-        //Update RSVP
+
+        //Update the RSVP count for events
         [WebMethod(EnableSession = true)]
-        public void UpdateRSVP(string eventId, string rsvpCount)
+        public Event[] GetRSVPCount(string eventId)
+        {
+
+            //WE ONLY SHARE Events WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("events");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+                string sqlSelect = "select rsvpCount from events where idevents = @eventIdValue;";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@eventIdValue", HttpUtility.UrlDecode(eventId));
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Event.  Fill each eveny with
+                //data from the rows, then dump them in a list.
+                List<Event> events = new List<Event>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+
+                    events.Add(new Event
+                    {
+                        rsvpCount = Convert.ToInt32(sqlDt.Rows[i]["rsvpCount"])
+                    });
+                }
+                //convert the list of events to an array and return!
+                return events.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty event
+                return new Event[0];
+            }
+        }
+
+
+        //Update RSVP count
+        [WebMethod(EnableSession = true)]
+        public string UpdateRSVP(string eventId, string rsvpCount)
         {
             //WRAPPING THE WHOLE THING IN AN IF STATEMENT TO CHECK IF THEY ARE AN ADMIN!
             if (Session["id"] != null)
@@ -275,16 +321,24 @@ namespace ProjectTemplate
                 //by closing the connection and moving on
                 try
                 {
+           
                     sqlCommand.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    return "Success";
                                                           
                 }
                 catch (Exception e)
                 {
-                    
+                    sqlConnection.Close();
+                    return "Failure";
                 }
 
-                sqlConnection.Close();
+                
 
+            }
+            else
+            {
+                return "Log in please";
             }
         }
 
@@ -337,6 +391,57 @@ namespace ProjectTemplate
                 return new Profile[0];
             }
         }
+
+
+        // Lists of all users for the homepage. 
+        [WebMethod(EnableSession = true)]
+        public Profile[] UserList()
+        {
+
+            //WE ONLY SHARE Events WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("Register");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["sweet16"].ConnectionString;
+                string sqlSelect = "select idRegister, fName, lName from Register;";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Event.  Fill each eveny with
+                //data from the rows, then dump them in a list.
+                List<Profile> profile = new List<Profile>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+
+                    profile.Add(new Profile
+                    {
+                        registerId = Convert.ToInt32(sqlDt.Rows[i]["idregister"]),
+                        fName = sqlDt.Rows[i]["fName"].ToString(),
+                        lName = sqlDt.Rows[i]["lName"].ToString(),
+                        year = "",
+                        college = "",
+                        campus = ""
+                    });
+                }
+                //convert the list of events to an array and return!
+                return profile.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty event
+                return new Profile[0];
+            }
+        }
+
+        
     }
 }
  
